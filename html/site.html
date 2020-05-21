@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+
+    <meta charset="utf-8">
+    <title></title>
+<style>
+.capteur{
+  display:flex;
+
+}
+
+.value{
+  display: flex;
+  padding: 5px;
+  justify-content: flex-start;
+}
+
+</style>
+    <script type="text/javascript">
+    function getCapteurs(){
+      var url = "capteur";
+      fetch(url,{
+          method:'get'
+      }).then(
+        function(response){
+          if(response.status == 200){
+            response.json().then(function(json){
+              console.log(json);
+              for (var index in json) {
+                console.log(json[index].ip);
+                console.log(json[index].id);
+                var div = document.createElement('div');
+                div.setAttribute("class", "capteur");
+                var divid = document.createElement('div');
+                divid.setAttribute("class", "value");
+                var divip = document.createElement('div');
+                divip.setAttribute("class", "value");
+
+
+                divid.innerHTML = json[index].id;
+                divip.innerHTML = json[index].ip;
+                div.appendChild(divid);
+                div.appendChild(divip);
+                document.getElementById('capteursdiv').appendChild(div);
+
+
+
+              }
+              // document.getElementById('tempdiv').innerHTML = text;
+            });
+          }else {
+            response.json().then(function(json){
+              console.log(json);
+              document.getElementById('tempdiv').innerHTML = json;
+            });
+          }
+        }
+      );
+    }
+      function temp(id){
+        var url = "/temp/"+id;
+        console.log(url);
+        fetch(url,{
+            method:'get'
+        }).then(
+          function(response){
+            if(response.status == 200){
+              response.text().then(function(text){
+                console.log(text);
+                document.getElementById('tempdiv').innerHTML = text;
+              });
+            }else {
+              response.json().then(function(json){
+                console.log(json);
+                document.getElementById('tempdiv').innerHTML = json;
+              });
+            }
+          }
+        );
+      }
+      function humi(id){
+        var url = "/humi/"+id;
+        console.log(url);
+        fetch(url,{
+            method:'get'
+        }).then(
+          function(response){
+            if(response.status == 200){
+              response.text().then(function(text){
+                console.log(text);
+                document.getElementById('humidiv').innerHTML = text;
+              });
+            }else {
+              response.json().then(function(json){
+                console.log(json);
+                document.getElementById('humidiv').innerHTML = json;
+              });
+            }
+          }
+        );
+      }
+    </script>
+  </head>
+  <body onload="getCapteurs();">
+
+
+
+<h1>Salut</h1>
+
+<div style="width:800px;" id="capteursdiv">
+
+</div>
+
+
+<div id="tempdiv"></div>
+
+<div id="humidiv"></div>
+
+
+
+  </body>
+</html>
